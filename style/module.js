@@ -3,6 +3,10 @@ import { OrbitControls } from "https://esm.sh/three@0.151.3/addons/controls/Orbi
 import { OutlineEffect } from "https://esm.sh/three@0.151.3/addons/effects/OutlineEffect.js"
 import { GLTFLoader } from "https://esm.sh/three@0.151.3/examples/jsm/loaders/GLTFLoader.js"
 
+
+
+
+
 const _VS = `
 uniform float pointMultiplier;
 attribute float size;
@@ -445,5 +449,45 @@ getCamera()
 tick()
 
 
+// Hàm tạo chữ "Merry Christmas" bằng Canvas
+function createTextLabel(text, position) {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    canvas.width = 1024;
+    canvas.height = 256;
+
+    // Thiết kế chữ
+    context.fillStyle = 'rgba(255, 255, 255, 0)'; // Nền trong suốt
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    
+    context.font = 'Bold 120px Arial';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    
+    // Đổ bóng cho chữ dễ nhìn hơn
+    context.shadowColor = 'rgba(0, 0, 0, 0.5)';
+    context.shadowBlur = 10;
+    context.fillStyle = '#ff0000'; // Màu đỏ Noel
+    context.fillText(text, canvas.width / 2, canvas.height / 2);
+    
+    // Viền trắng cho chữ
+    context.strokeStyle = '#ffffff';
+    context.lineWidth = 4;
+    context.strokeText(text, canvas.width / 2, canvas.height / 2);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
+    const sprite = new THREE.Sprite(spriteMaterial);
+
+    // Điều chỉnh kích thước tỉ lệ
+    sprite.scale.set(10, 2.5, 1);
+    sprite.position.copy(position);
+
+    return sprite;
+}
+
+// Gọi hàm để thêm chữ vào scene
+const christmasLabel = createTextLabel("Merry Christmas", new THREE.Vector3(0, 4, 0));
+scene.add(christmasLabel);
 
 
