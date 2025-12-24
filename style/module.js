@@ -449,45 +449,74 @@ getCamera()
 tick()
 
 
-// Hàm tạo chữ "Merry Christmas" bằng Canvas
-function createTextLabel(text, position) {
+// --- HÀM TẠO CHỮ MỚI VỚI HIỆU ỨNG PHÁT SÁNG ĐẸP MẮT ---
+
+function createStylishTextLabel(text, position) {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
-    canvas.width = 1024;
-    canvas.height = 256;
+    // Tăng độ phân giải canvas để chữ sắc nét hơn
+    canvas.width = 1024 * 2; 
+    canvas.height = 256 * 2;
+    const scaleFactor = 2; // Hệ số tỉ lệ cho các thông số vẽ
 
-    // Thiết kế chữ
-    context.fillStyle = 'rgba(255, 255, 255, 0)'; // Nền trong suốt
+    context.fillStyle = 'rgba(255, 255, 255, 0)';
     context.fillRect(0, 0, canvas.width, canvas.height);
     
-    context.font = 'Bold 120px Arial';
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+
+    context.font = `Bold ${100 * scaleFactor}px "Arial", sans-serif`;
     context.textAlign = 'center';
     context.textBaseline = 'middle';
     
-    // Đổ bóng cho chữ dễ nhìn hơn
-    context.shadowColor = 'rgba(0, 0, 0, 0.5)';
-    context.shadowBlur = 10;
-    context.fillStyle = '#ff0000'; // Màu đỏ Noel
-    context.fillText(text, canvas.width / 2, canvas.height / 2);
+    // --- Lớp 1: Hào quang phía ngoài (Màu xanh băng - Ice Blue) ---
+    // Giúp chữ tách biệt khỏi nền tối
+    context.shadowColor = '#00ffff'; // Màu cyan sáng
+    context.shadowBlur = 30 * scaleFactor;
+    context.strokeStyle = 'rgba(0, 255, 255, 0.5)';
+    context.lineWidth = 15 * scaleFactor;
+    context.strokeText(text, centerX, centerY);
+
+    // --- Lớp 2: Viền ấm áp (Màu vàng nhẹ - Soft Gold) ---
+    // Tạo cảm giác ấm cúng của Giáng sinh
+    context.shadowColor = '#ffdd88'; // Màu vàng kem
+    context.shadowBlur = 15 * scaleFactor;
+    context.strokeStyle = '#ffffff'; // Viền trắng làm nền cho màu vàng
+    context.lineWidth = 6 * scaleFactor;
+    context.strokeText(text, centerX, centerY);
     
-    // Viền trắng cho chữ
-    context.strokeStyle = '#ffffff';
-    context.lineWidth = 4;
-    context.strokeText(text, canvas.width / 2, canvas.height / 2);
+    // --- Lớp 3: Chữ chính (Màu trắng tinh khiết) ---
+    // Đặt lại shadow để tạo độ sắc nét
+    context.shadowColor = 'rgba(0, 0, 0, 0.4)'; // Bóng đen nhẹ để tạo khối
+    context.shadowBlur = 4 * scaleFactor;
+    context.shadowOffsetX = 2 * scaleFactor;
+    context.shadowOffsetY = 2 * scaleFactor;
+
+    context.fillStyle = '#ffffff'; // Màu trắng
+    context.fillText(text, centerX, centerY);
 
     const texture = new THREE.CanvasTexture(canvas);
-    const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
+    texture.minFilter = THREE.LinearFilter; // Giúp texture mịn hơn khi nhìn xa
+
+    const spriteMaterial = new THREE.SpriteMaterial({ 
+        map: texture,
+        transparent: true,
+        opacity: 0.95 // Hơi trong suốt nhẹ để trông tự nhiên hơn
+    });
     const sprite = new THREE.Sprite(spriteMaterial);
 
-    // Điều chỉnh kích thước tỉ lệ
-    sprite.scale.set(10, 2.5, 1);
+    // Điều chỉnh kích thước tỉ lệ (cần lớn hơn một chút do canvas lớn hơn)
+    sprite.scale.set(12, 3, 1); 
     sprite.position.copy(position);
 
     return sprite;
 }
 
-// Gọi hàm để thêm chữ vào scene
-const christmasLabel = createTextLabel("Merry Christmas", new THREE.Vector3(0, 4, 0));
+// --- GỌI HÀM ĐỂ THÊM CHỮ VÀO SCENE ---
+// Đã cập nhật nội dung text thành "Merry Christmas Tnhi"
+// Vị trí (0, 4.5, 0) là đưa lên cao hơn nóc nhà một chút
+const christmasLabel = createStylishTextLabel("Merry Christmas Tnhi", new THREE.Vector3(0, 4.5, 0));
 scene.add(christmasLabel);
 
+// --- KẾT THÚC PHẦN TẠO CHỮ ---
 
