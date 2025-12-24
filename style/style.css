@@ -8,7 +8,7 @@ html, body {
   height: 100%;
   width: 100%;
   overflow: hidden; 
-  background-image: url('https://i.pinimg.com/originals/44/00/22/4400229294ea52102e6417a2a3b48889.gif'); 
+  background-image: url('https://i.postimg.cc/3Ryp4S3v/N.jpg'); 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -46,4 +46,5 @@ h1 {
   height: 100%;
   background-color: #b7d4c8ee;
   backdrop-filter: blur(5px);
+
 }
